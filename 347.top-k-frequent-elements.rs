@@ -5,10 +5,8 @@ impl Solution {
         let mut cnt_map: HashMap<i32, i32> = HashMap::new();
 
         for num in nums {
-            match cnt_map.get(&num) {
-                Some(v) => {
-                    cnt_map.insert(num, v + 1);
-                }
+            match cnt_map.get_mut(&num) {
+                Some(v) => *v += 1,
                 None => {
                     cnt_map.insert(num, 1);
                 }
@@ -16,18 +14,13 @@ impl Solution {
         }
 
         let mut order_vec: Vec<(i32, i32)> = cnt_map.into_iter().collect();
-        order_vec.sort_by_key(|&(_, v)| v);
+        order_vec.sort_unstable_by(|a, b| b.1.cmp(&a.1));
 
-        let mut res = Vec::new();
-
-        for i in 0..k {
-            let (a, b) = order_vec[order_vec.len() - 1 - i as usize];
-
-            res.push(a);
-        }
-
-        res
+        order_vec
+            .into_iter()
+            .take(k as usize)
+            .map(|(num, _)| num)
+            .collect()
     }
 }
 // @leet end
-
