@@ -3,7 +3,7 @@ impl Solution {
     pub fn eval_rpn(tokens: Vec<String>) -> i32 {
         let mut tmp: Vec<i32> = Vec::new();
 
-        for (i, s) in tokens.into_iter().enumerate() {
+        for s in tokens.into_iter() {
             match s.parse::<i32>() {
                 Ok(num) => {
                     tmp.push(num);
