@@ -1,46 +1,32 @@
 // @leet start
 impl Solution {
-    pub fn largest_rectangle_area(heights: Vec<i32>) -> i32 {
-        let mut st: Vec<usize> = Vec::new();
-        let mut max_area = 0;
+    pub fn largest_rectangle_area(mut heights: Vec<i32>) -> i32 {
+        // sentry: add it just for reduce code
+        heights.push(0);
 
-        for (i, &h) in heights.iter().enumerate() {
-            if i == 0 {
-                st.push(i);
-                continue;
-            }
+        let mut st: Vec<usize> = Vec::with_capacity(heights.len());
+        let mut ans = 0;
 
-            while let Some(&last_idx) = st.last() {
-                let v = *heights.get(last_idx).unwrap();
-                if v > h {
-                    st.pop();
-                    let w = if let Some(&left) = st.last() {
-                        i - left - 1
-                    } else {
-                        i
-                    };
-                    max_area = max_area.max(v * w as i32);
-                } else {
+        for i in 0..heights.len() {
+            while let Some(&mid) = st.last() {
+                if heights[mid] <= heights[i] {
                     break;
                 }
+
+                st.pop();
+                let width = if let Some(&left) = st.last() {
+                    i - left - 1
+                } else {
+                    i
+                };
+
+                ans = ans.max(heights[mid] * width as i32);
             }
 
             st.push(i);
         }
 
-        while let Some(last_idx) = st.pop() {
-            let v = heights[last_idx];
-
-            let w = if let Some(&left) = st.last() {
-                heights.len() - left - 1
-            } else {
-                heights.len()
-            };
-
-            max_area = max_area.max(v * w as i32);
-        }
-
-        max_area
+        ans
     }
 }
 // @leet end
