@@ -70,7 +70,7 @@ impl Solution {
 ```
 
 
-## Solution - My self
+## Solution - My self - Monotonic Bad
 Tips:
 1. Only the peak bar should be consider. 
   - Before highest bar, just calculate left peak and right peak and sub-bars between them
@@ -124,6 +124,43 @@ impl Solution {
             }
 
             i = j;
+        }
+
+        ans
+    }
+}
+```
+
+## Classic solution - Double Pointer
+
+Tips:
+1. every water area base on `height[i]`, its height depend on `l` an `r` endpoint
+2. If using left_max, right_max, we can deal each height[i] on range.
+
+![double pointer](./42_2.svg)
+```rust
+impl Solution {
+    pub fn trap(height: Vec<i32>) -> i32 {
+        let mut ans = 0i32;
+
+        let mut l = 0usize;
+        let mut r = height.len().saturating_sub(1);
+
+        // maintain l and r endpoint
+        let mut l_max = 0;
+        let mut r_max = 0;
+        while l < r {
+            l_max = l_max.max(height[l]);
+            r_max = r_max.max(height[r]);
+
+            // move the lower one
+            if height[l] <= height[r] {
+                ans += l_max - height[l];
+                l += 1;
+            } else {
+                ans += r_max - height[r];
+                r -= 1;
+            }
         }
 
         ans
