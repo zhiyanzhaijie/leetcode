@@ -21,7 +21,7 @@
 
 ### 2.1 Converging Two Pointers
 - [x] [Easy] 125. Valid Palindrome
-- [ ] [Medium] 167. Two Sum II - Input Array Is Sorted
+- [x] [Medium] 167. Two Sum II - Input Array Is Sorted
 - [ ] [Medium] 15. 3Sum
 - [ ] [Medium] 11. Container With Most Water
 - [ ] [Hard] 42. Trapping Rain Water
