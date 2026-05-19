@@ -1,16 +1,11 @@
 // @leet start
 impl Solution {
     pub fn compress(chars: &mut Vec<char>) -> i32 {
-        let n = chars.len();
-        if n <= 2 {
-            return n as i32;
-        };
-
         let mut l = 0;
-        let mut r = 1;
 
-        while r < n {
-            while r < n && chars[l] == chars[r] {
+        while l < chars.len() {
+            let mut r = l + 1;
+            while r < chars.len() && chars[l] == chars[r] {
                 r += 1;
             }
 
@@ -26,7 +21,7 @@ impl Solution {
                 0
             };
 
-            l = r;
+            l += 1 + compress_len;
         }
 
         chars.len() as i32
