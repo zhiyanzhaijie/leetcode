@@ -15,30 +15,26 @@ export type Solution = SolutionMeta & {
   markdown: string;
   assets: Record<string, string>;
 };
-
-export const GITHUB_OWNER = 'zhiyanzhaijie';
-export const GITHUB_REPO = 'leetcode';
-export const GITHUB_BRANCH = 'main';
 export const SOLUTIONS_DIR = 'solutions';
-
-const RAW_BASE_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}`;
-const TREE_API_URL = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/trees/${GITHUB_BRANCH}?recursive=1`;
 let solutionFilesPromise: Promise<SolutionFile[]> | null = null;
 let solutionMetasPromise: Promise<SolutionMeta[]> | null = null;
-const markdownCache = new Map<string, Promise<string>>();
-
-type GitHubTreeResponse = {
-  tree?: Array<{
-    path?: string;
-    type?: string;
-  }>;
-};
+const solutionMarkdownModules = import.meta.glob('../solutions/*/solution.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+const solutionAssetModules = import.meta.glob('../solutions/**/*', {
+  query: '?url',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
 
 type SolutionFile = {
   id: number;
   path: string;
   markdownUrl: string;
   assetBaseUrl: string;
+  markdown: string;
 };
 
 function extractTitle(body: string, id: number): string {
@@ -99,7 +95,7 @@ function extractTags(body: string): string[] {
 }
 
 export function extractIdFromPath(path: string): number {
-  const match = path.match(/^solutions\/(\d+)\/solution\.md$/);
+  const match = path.match(/(?:^|\/)solutions\/(\d+)\/solution\.md$/);
   return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
 }
 
@@ -118,6 +114,7 @@ export function parseSolutionMeta(file: SolutionFile, markdown: string): Solutio
 
 export function buildSolutionAssets(markdown: string, assetBaseUrl: string): Record<string, string> {
   const assets: Record<string, string> = {};
+  const solutionDir = assetBaseUrl.replace(/^\/+/, '');
   const imageMatches = [
     ...markdown.matchAll(/!\[[^\]]*\]\((\.\/[^)]+)\)/g),
     ...markdown.matchAll(/\[img\]\((\.\/[^)]+)\)/g),
@@ -125,7 +122,9 @@ export function buildSolutionAssets(markdown: string, assetBaseUrl: string): Rec
 
   for (const match of imageMatches) {
     const relativePath = match[1];
-    assets[relativePath] = `${assetBaseUrl}/${relativePath.replace(/^\.\//, '')}`;
+    const modulePath = `../${solutionDir}/${relativePath.replace(/^\.\//, '')}`;
+    const resolvedUrl = solutionAssetModules[modulePath];
+    assets[relativePath] = resolvedUrl ?? `${assetBaseUrl}/${relativePath.replace(/^\.\//, '')}`;
   }
 
   return assets;
@@ -135,44 +134,21 @@ export function sortByIdAsc<T extends { id: number }>(items: T[]): T[] {
   return [...items].sort((a, b) => a.id - b.id);
 }
 
-async function fetchText(url: string): Promise<string> {
-  if (!markdownCache.has(url)) {
-    markdownCache.set(url, (async () => {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch ${url}: ${response.status}`);
-      }
-      return response.text();
-    })());
-  }
-  return markdownCache.get(url)!;
-}
 
 export async function fetchSolutionFiles(): Promise<SolutionFile[]> {
   if (solutionFilesPromise) return solutionFilesPromise;
   solutionFilesPromise = (async () => {
-  const response = await fetch(TREE_API_URL, {
-    headers: {
-      Accept: 'application/vnd.github+json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to list GitHub tree: ${response.status}`);
-  }
-
-  const data = (await response.json()) as GitHubTreeResponse;
-  return (data.tree ?? [])
-    .filter((entry) => entry.type === 'blob' && /^solutions\/\d+\/solution\.md$/.test(entry.path ?? ''))
-    .map((entry) => {
-      const path = entry.path ?? '';
-      const id = extractIdFromPath(path);
-      const solutionDir = path.replace(/\/solution\.md$/, '');
+  return Object.entries(solutionMarkdownModules)
+    .map(([modulePath, markdown]) => {
+      const id = extractIdFromPath(modulePath);
+      const path = `${SOLUTIONS_DIR}/${id}/solution.md`;
+      const solutionDir = `${SOLUTIONS_DIR}/${id}`;
       return {
         id,
         path,
-        markdownUrl: `${RAW_BASE_URL}/${path}`,
-        assetBaseUrl: `${RAW_BASE_URL}/${solutionDir}`,
+        markdownUrl: `/${path}`,
+        assetBaseUrl: `/${solutionDir}`,
+        markdown,
       };
     })
     .filter((file) => Number.isFinite(file.id))
@@ -187,8 +163,7 @@ export async function fetchSolutionMetas(): Promise<SolutionMeta[]> {
   const files = await fetchSolutionFiles();
   const metas = await Promise.all(
     files.map(async (file) => {
-      const markdown = await fetchText(file.markdownUrl);
-      return parseSolutionMeta(file, markdown);
+      return parseSolutionMeta(file, file.markdown);
     }),
   );
   return sortByIdAsc(metas);
@@ -200,8 +175,7 @@ export async function fetchSolutionById(id: number): Promise<Solution | null> {
   const files = await fetchSolutionFiles();
   const file = files.find((item) => item.id === id);
   if (!file) return null;
-
-  const markdown = await fetchText(file.markdownUrl);
+  const markdown = file.markdown;
   return {
     ...parseSolutionMeta(file, markdown),
     markdown,
