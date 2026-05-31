@@ -19,9 +19,27 @@
 ---
 ## Two pointer
 
+> Only pure two-pointer on array/string.
+
 ### 2.1 Converging Two Pointers
 - [x] [Easy] 125. Valid Palindrome
 - [x] [Medium] 167. Two Sum II - Input Array Is Sorted
-- [ ] [Medium] 15. 3Sum
-- [ ] [Medium] 11. Container With Most Water
-- [ ] [Hard] 42. Trapping Rain Water
+- [x] [Medium] 11. Container With Most Water
+- [x] [Hard] 42. Trapping Rain Water
+- [x] [Medium] 15. 3Sum
+- [x] [Medium] 16. 3Sum Closest
+- [x] [Medium] 18. 4Sum
+
+### 2.2 Same Direction Two Pointers (In-place)
+- [x] [Easy] 26. Remove Duplicates from Sorted Array
+- [x] [Easy] 27. Remove Element
+- [x] [Medium] 80. Remove Duplicates from Sorted Array II
+- [x] [Easy] 283. Move Zeroes
+- [x] Medium 443. String Compression
+
+### 2.3 Partition Pointers
+- [ ] [Medium] 75. Sort Colors
+
+### 2.4 Two Pointers on Two Sequences
+- [ ] [Easy] 88. Merge Sorted Array
+- [ ] [Medium] 986. Interval List Intersections

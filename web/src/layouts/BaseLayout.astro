@@ -1,0 +1,35 @@
+---
+import '../styles/global.css';
+import SiteFooter from '../components/react/SiteFooter.tsx';
+import SiteNav from '../components/react/SiteNav.tsx';
+
+type Props = {
+  title?: string;
+  description?: string;
+  currentId?: number;
+};
+
+const {
+  title = 'leetcode notes of @zhiyanzhaijie',
+  description = 'Self solution point for thinking and re-thinking.',
+  currentId,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <SiteNav client:load pathname={Astro.url.pathname} currentId={currentId} />
+    <main class="page-shell">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
