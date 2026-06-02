@@ -13,6 +13,7 @@
 - [x] [Hard] 1944. Number of Visible People in a Queue
 - [x] [Medium] 907. Sum of Subarray Minimums
 - [x] [Medium] 2104. Sum of Subarray Ranges
+- [x] Medium 853. Car Fleet
 - [Medium] 316. Remove Duplicate Letters
 - [Hard] 2281. Sum of Total Strength of Wizards
 
