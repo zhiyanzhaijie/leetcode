@@ -1,3 +1,4 @@
+import { Moon, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 const BASE_PATH = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -17,6 +18,16 @@ type Props = {
 
 export default function SiteNav({ pathname, currentId }: Props) {
   const [currentPathname, setCurrentPathname] = useState(pathname);
+  const [isDark, setIsDark] = useState(
+    () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark'),
+  );
+
+  function toggleTheme() {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle('dark', next);
+    window.localStorage.setItem('theme', next ? 'dark' : 'light');
+  }
 
   useEffect(() => {
     const syncPathname = () => setCurrentPathname(window.location.pathname);
@@ -53,6 +64,16 @@ export default function SiteNav({ pathname, currentId }: Props) {
         </a>
         <span className={!isHome ? 'is-active' : ''}>{detailLabel}</span>
       </nav>
+      <button
+        type="button"
+        className="theme-toggle"
+        onClick={toggleTheme}
+        aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+      >
+        {isDark
+          ? <Sun aria-hidden="true" size={14} strokeWidth={1.5} />
+          : <Moon aria-hidden="true" size={14} strokeWidth={1.5} />}
+      </button>
     </aside>
   );
 }
