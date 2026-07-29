@@ -1,0 +1,4 @@
+interface:
+  display_name: "LeetCode Solution Notes"
+  short_description: "Generate structured notes from nvim LeetCode solutions"
+  default_prompt: "Use $leetcode-write-notes to turn this completed Rust solution into a structured LeetCode note."
