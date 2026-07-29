@@ -18,6 +18,11 @@ export type Solution = SolutionMeta & {
 export const SOLUTIONS_DIR = 'solutions';
 let solutionFilesPromise: Promise<SolutionFile[]> | null = null;
 let solutionMetasPromise: Promise<SolutionMeta[]> | null = null;
+const tagGroupsMarkdownModules = import.meta.glob('../solutions/tag_groups.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
 const solutionMarkdownModules = import.meta.glob('../solutions/*/solution.md', {
   query: '?raw',
   import: 'default',
@@ -39,6 +44,11 @@ type SolutionFile = {
 
 function extractTitle(body: string, id: number): string {
   const lines = body.split('\n').map((line) => line.trim()).filter(Boolean);
+  const heading = lines.find((line) => new RegExp(`^#\\s+${id}\\.\\s+`).test(line));
+  if (heading) {
+    return heading.replace(new RegExp(`^#\\s+${id}\\.\\s+`), '').trim();
+  }
+
   const numbered = lines.find((line) => new RegExp(`^${id}\\.\\s+`).test(line));
   if (numbered) {
     return numbered.replace(new RegExp(`^${id}\\.\\s+`), '').trim();
@@ -78,21 +88,39 @@ function extractSummary(body: string): string {
   return parts[0].slice(0, 120);
 }
 
-function extractTags(body: string): string[] {
-  const headings = [...body.matchAll(/^##\s+(.+)$/gm)].map((match) => match[1].trim());
-  const hints = ['stack', 'pointer', 'dp', 'graph', 'greedy', 'binary', 'tree', 'array', 'string'];
-  const matched = hints.filter((hint) => new RegExp(`\\b${hint}\\b`, 'i').test(body));
-  const fromHeadings = headings
-    .map((heading) => heading.toLowerCase())
-    .flatMap((heading) => {
-      if (heading.includes('stack')) return ['stack'];
-      if (heading.includes('pointer')) return ['two-pointers'];
-      if (heading.includes('monotonic')) return ['monotonic'];
-      if (heading.includes('double')) return ['double-pointer'];
-      return [];
-    });
-  return [...new Set([...matched, ...fromHeadings])].slice(0, 3);
+function parseTagGroups(body: string): Map<number, string[]> {
+  const tagsByProblem = new Map<number, string[]>();
+  let currentTag: string | null = null;
+
+  for (const line of body.split('\n')) {
+    const subgroup = line.match(/^###\s+\d+\.\d+\s+(.+?)\s*$/);
+    if (subgroup) {
+      currentTag = subgroup[1].trim();
+      continue;
+    }
+
+    if (/^#{1,2}\s+/.test(line) || /^---\s*$/.test(line)) {
+      currentTag = null;
+      continue;
+    }
+
+    if (!currentTag) continue;
+    const problem = line.match(
+      /^-\s+(?:\[[ xX]\]\s+)?(?:\[(?:Easy|Medium|Hard)\]\s+|(?:Easy|Medium|Hard)\s+)?(\d+)\./,
+    );
+    if (!problem) continue;
+
+    const problemId = Number(problem[1]);
+    const tags = tagsByProblem.get(problemId) ?? [];
+    if (!tags.includes(currentTag)) tags.push(currentTag);
+    tagsByProblem.set(problemId, tags);
+  }
+
+  return tagsByProblem;
 }
+
+const tagGroupsMarkdown = Object.values(tagGroupsMarkdownModules)[0] ?? '';
+const tagsByProblem = parseTagGroups(tagGroupsMarkdown);
 
 export function extractIdFromPath(path: string): number {
   const match = path.match(/(?:^|\/)solutions\/(\d+)\/solution\.md$/);
@@ -106,7 +134,7 @@ export function parseSolutionMeta(file: SolutionFile, markdown: string): Solutio
     title: extractTitle(markdown, file.id),
     difficulty: extractDifficulty(markdown),
     summary: extractSummary(markdown),
-    tags: extractTags(markdown),
+    tags: tagsByProblem.get(file.id) ?? [],
     markdownUrl: file.markdownUrl,
     assetBaseUrl: file.assetBaseUrl,
   };
