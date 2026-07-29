@@ -1,8 +1,10 @@
 import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import MarkdownArticle from './MarkdownArticle';
+import SolutionTableOfContents from './SolutionTableOfContents';
 import SolutionDetailHeader from './SolutionDetailHeader';
 import type { Solution, SolutionMeta } from '../../lib/solutions';
 import { fetchSolutionById, fetchSolutionMetas } from '../../lib/solutions';
+import { extractMarkdownOutline } from '../../lib/markdownOutline';
 
 const PAGE_SIZE = 8;
 const BASE_PATH = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -124,6 +126,10 @@ export default function HomePage() {
   const currentIndex = items.findIndex((item) => item.id === routeId);
   const prev = currentIndex > 0 ? items[currentIndex - 1] : null;
   const next = currentIndex >= 0 && currentIndex < items.length - 1 ? items[currentIndex + 1] : null;
+  const outline = useMemo(
+    () => solution ? extractMarkdownOutline(solution.markdown) : [],
+    [solution],
+  );
 
   function updateQuery(value: string) {
     setQuery(value);
@@ -141,10 +147,13 @@ export default function HomePage() {
         {detailState === 'loading' && <p className="empty-state">Loading solution from GitHub...</p>}
         {detailState === 'error' && <p className="empty-state">{error ?? 'Failed to load solution.'}</p>}
         {solution && (
-          <>
+          <div className="solution-detail">
             <SolutionDetailHeader current={solution} prev={prev} next={next} onNavigate={navigate} />
-            <MarkdownArticle markdown={solution.markdown} assets={solution.assets} />
-          </>
+            <div className="solution-detail__content">
+              <SolutionTableOfContents items={outline} />
+              <MarkdownArticle markdown={solution.markdown} assets={solution.assets} outline={outline} />
+            </div>
+          </div>
         )}
       </div>
     );
