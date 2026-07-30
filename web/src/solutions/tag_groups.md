@@ -44,9 +44,16 @@
 ### 2.4 Two Pointers on Two Sequences
 - [ ] [Easy] 88. Merge Sorted Array
 - [ ] [Medium] 986. Interval List Intersections
+- [x] [Easy] 455. Assign Cookies
 
 ---
 ## Permutation
 
 ### 3.1 Permutation Cycles
 - [x] [Medium] 2471. Minimum Number of Operations to Sort a Binary Tree by Level
+
+---
+## Greedy
+
+### 4.1 Greedy Matching
+- [x] [Easy] 455. Assign Cookies
