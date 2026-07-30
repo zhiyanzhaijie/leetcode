@@ -57,3 +57,4 @@
 - [x] [Easy] 455. Assign Cookies
 - [x] [Medium] 55. Jump Game
 - [x] [Medium] 763. Partition Labels
+- [x] [Medium] 435. Non-overlapping Intervals
