@@ -54,6 +54,5 @@
 
 ---
 ## Greedy
-
-### 4.1 Greedy Matching
 - [x] [Easy] 455. Assign Cookies
+- [x] [Medium] 55. Jump Game
