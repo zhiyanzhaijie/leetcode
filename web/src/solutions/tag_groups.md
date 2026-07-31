@@ -58,3 +58,7 @@
 - [x] [Medium] 55. Jump Game
 - [x] [Medium] 763. Partition Labels
 - [x] [Medium] 435. Non-overlapping Intervals
+
+---
+## Dynamic Programming
+- [x] [Medium] 416. Partition Equal Subset Sum
