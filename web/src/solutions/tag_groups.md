@@ -62,3 +62,6 @@
 ---
 ## Dynamic Programming
 - [x] [Medium] 416. Partition Equal Subset Sum
+
+### 4.1 Interval DP
+- [x] [Medium] 486. Predict the Winner
