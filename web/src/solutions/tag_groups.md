@@ -46,6 +46,9 @@
 - [ ] [Medium] 986. Interval List Intersections
 - [x] [Easy] 455. Assign Cookies
 
+### 2.5 Center Expansion
+- [x] [Medium] 5. Longest Palindromic Substring
+
 ---
 ## Permutation
 
@@ -65,3 +68,4 @@
 
 ### 4.1 Interval DP
 - [x] [Medium] 486. Predict the Winner
+- [x] [Medium] 5. Longest Palindromic Substring
