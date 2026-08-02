@@ -1,6 +1,5 @@
 # Tag Groups 
 ---
-
 ## Stack 
 
 ### 1.1 Monotonic Stack
@@ -70,3 +69,4 @@
 - [x] [Medium] 486. Predict the Winner
 - [x] [Medium] 5. Longest Palindromic Substring
 - [x] Medium 647. Palindromic Substrings
+- [x] [Hard] 1312. Minimum Insertion Steps to Make a String Palindrome
