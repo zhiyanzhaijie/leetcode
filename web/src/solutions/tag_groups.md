@@ -64,6 +64,7 @@
 ---
 ## Dynamic Programming
 - [x] [Medium] 416. Partition Equal Subset Sum
+- [x] [Medium] 53. Maximum Subarray
 
 ### 4.1 Interval DP
 - [x] [Medium] 486. Predict the Winner
