@@ -71,3 +71,4 @@
 - [x] Medium 647. Palindromic Substrings
 - [x] [Hard] 1312. Minimum Insertion Steps to Make a String Palindrome
 - [x] [Hard] 132. Palindrome Partitioning II
+- [x] [Medium] 1039. Minimum Score Triangulation of Polygon
