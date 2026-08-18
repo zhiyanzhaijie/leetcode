@@ -67,6 +67,7 @@
 - [x] [Medium] 53. Maximum Subarray
 - [x] [Easy] 70. Climbing Stairs
 - [x] [Medium] 152. Maximum Product Subarray
+- [x] [Medium] 62. Unique Paths
 
 ### 4.1 Interval DP
 - [x] [Medium] 486. Predict the Winner
