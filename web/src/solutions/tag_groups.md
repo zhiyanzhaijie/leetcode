@@ -69,6 +69,7 @@
 - [x] [Medium] 152. Maximum Product Subarray
 - [x] [Medium] 62. Unique Paths
 - [x] [Medium] 64. Minimum Path Sum
+- [x] [Medium] 300. Longest Increasing Subsequence
 
 ### 4.1 Interval DP
 - [x] [Medium] 486. Predict the Winner
@@ -77,3 +78,7 @@
 - [x] [Hard] 1312. Minimum Insertion Steps to Make a String Palindrome
 - [x] [Hard] 132. Palindrome Partitioning II
 - [x] [Medium] 1039. Minimum Score Triangulation of Polygon
+
+---
+## Binary Search
+- [x] [Medium] 300. Longest Increasing Subsequence
