@@ -70,6 +70,7 @@
 - [x] [Medium] 62. Unique Paths
 - [x] [Medium] 64. Minimum Path Sum
 - [x] [Medium] 300. Longest Increasing Subsequence
+- [x] [Medium] 221. Maximal Square
 
 ### 4.1 Interval DP
 - [x] [Medium] 486. Predict the Winner
