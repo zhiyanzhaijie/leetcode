@@ -83,3 +83,9 @@
 ---
 ## Binary Search
 - [x] [Medium] 300. Longest Increasing Subsequence
+
+---
+## Math
+
+### 5.1 Parity and Modular Arithmetic
+- [x] [Easy] 3875. Construct Uniform Parity Array I
