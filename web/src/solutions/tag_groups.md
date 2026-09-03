@@ -58,11 +58,13 @@
 ## Greedy
 - [x] [Easy] 455. Assign Cookies
 - [x] [Medium] 55. Jump Game
+- [ ] [Medium] 45. Jump Game II
 - [x] [Medium] 763. Partition Labels
 - [x] [Medium] 435. Non-overlapping Intervals
 
 ---
 ## Dynamic Programming
+- [x] [Medium] 45. Jump Game II
 - [x] [Medium] 416. Partition Equal Subset Sum
 - [x] [Medium] 53. Maximum Subarray
 - [x] [Easy] 70. Climbing Stairs
