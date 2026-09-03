@@ -65,6 +65,7 @@
 ---
 ## Dynamic Programming
 - [x] [Medium] 45. Jump Game II
+- [x] [Medium] 63. Unique Paths II
 - [x] [Medium] 416. Partition Equal Subset Sum
 - [x] [Medium] 53. Maximum Subarray
 - [x] [Easy] 70. Climbing Stairs
@@ -91,3 +92,9 @@
 
 ### 5.1 Parity and Modular Arithmetic
 - [x] [Easy] 3875. Construct Uniform Parity Array I
+
+---
+## Matrix
+
+### 6.1 Grid Dynamic Programming
+- [x] [Medium] 63. Unique Paths II
